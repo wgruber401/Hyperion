@@ -65,6 +65,7 @@ public class Hyperion extends JavaPlugin {
 	public static void reload() {
 		Hyperion.getPlugin().reloadConfig();
 		ConfigManager.modifiersConfig.reloadConfig();
+		ConfigManager.scalingConfig.reloadConfig();
 		BendingFallingBlock.removeAll();
 		TempArmorStand.removeAll();
 		CoreMethods.loadAbilities();

@@ -27,9 +27,11 @@ import com.projectkorra.projectkorra.ability.LightningAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.abilities.earthbending.EarthGuard;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -65,10 +67,11 @@ public class Bolt extends LightningAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Fire.Bolt.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.Bolt.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.Bolt.Range");
-		chargeTime = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.Bolt.ChargeTime");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Fire.Bolt.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Fire.Bolt.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Fire.Bolt.Range", currentLevel);
+		chargeTime = ScaleMethods.getLong("Abilities.Fire.Bolt.ChargeTime", currentLevel);
 
 		charged = chargeTime <= 0;
 		struck = false;

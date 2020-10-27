@@ -27,8 +27,10 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -74,9 +76,10 @@ public class EarthGlove extends EarthAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthGlove.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthGlove.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthGlove.Range");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Earth.EarthGlove.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Earth.EarthGlove.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Earth.EarthGlove.Range", currentLevel);
 
 		if (launchEarthGlove()) {
 			start();

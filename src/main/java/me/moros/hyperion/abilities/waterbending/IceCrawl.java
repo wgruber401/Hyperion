@@ -28,11 +28,13 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.MovementHandler;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import com.projectkorra.projectkorra.util.TempPotionEffect;
 import com.projectkorra.projectkorra.waterbending.ice.PhaseChange;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.BendingFallingBlock;
 import me.moros.hyperion.util.TempArmorStand;
 import org.bukkit.Location;
@@ -86,12 +88,13 @@ public class IceCrawl extends IceAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Water.IceCrawl.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.IceCrawl.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Water.IceCrawl.Range");
-		selectRange = Hyperion.getPlugin().getConfig().getInt("Abilities.Water.IceCrawl.SelectRange");
-		iceDuration = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.IceCrawl.IceDuration");
-		duration = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.IceCrawl.FreezeDuration");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Water.IceCrawl.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Water.IceCrawl.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Water.IceCrawl.Range", currentLevel);
+		selectRange = ScaleMethods.getInt("Abilities.Water.IceCrawl.SelectRange", currentLevel);
+		iceDuration = ScaleMethods.getLong("Abilities.Water.IceCrawl.IceDuration", currentLevel);
+		duration = ScaleMethods.getLong("Abilities.Water.IceCrawl.FreezeDuration", currentLevel);
 
 		range = (int) getNightFactor(range, player.getWorld());
 		selectRange = (int) getNightFactor(selectRange, player.getWorld());

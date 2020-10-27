@@ -19,9 +19,12 @@
 
 package me.moros.hyperion.abilities.airbending;
 
+import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.AirAbility;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
+import me.moros.hyperion.methods.ScaleMethods;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -42,7 +45,8 @@ public class Evade extends AirAbility implements AddonAbility {
 			return;
 		}
 
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Air.Evade.Cooldown");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		cooldown = ScaleMethods.getLong("Abilities.Air.Evade.Cooldown", currentLevel);
 		direction = player.getEyeLocation().getDirection().setY(0).normalize().multiply(-0.2);
 
 		angleStep = Math.PI / 10;

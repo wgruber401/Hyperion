@@ -27,8 +27,10 @@ import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformatio
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.earthbending.Collapse;
 import com.projectkorra.projectkorra.util.ClickType;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.abilities.earthbending.EarthGlove;
+import me.moros.hyperion.methods.ScaleMethods;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -48,9 +50,10 @@ public class EarthShards extends EarthAbility implements AddonAbility, ComboAbil
 			return;
 		}
 
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthCombo.EarthShards.Cooldown");
-		shotCooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthCombo.EarthShards.ShotCooldown");
-		int maxShards = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthCombo.EarthShards.MaxShards");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		cooldown = ScaleMethods.getLong("Abilities.Earth.EarthCombo.EarthShards.Cooldown", currentLevel);
+		shotCooldown = ScaleMethods.getLong("Abilities.Earth.EarthCombo.EarthShards.ShotCooldown", currentLevel);
+		int maxShards = ScaleMethods.getInt("Abilities.Earth.EarthCombo.EarthShards.MaxShards", currentLevel);
 
 		shardsLeft = Math.min(maxShards, 10);
 		lastShotTime = 0;

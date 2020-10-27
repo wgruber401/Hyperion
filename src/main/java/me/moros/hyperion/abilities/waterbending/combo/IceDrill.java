@@ -27,11 +27,13 @@ import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformatio
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.ClickType;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import com.projectkorra.projectkorra.waterbending.ice.PhaseChange;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.abilities.waterbending.IceCrawl;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -74,11 +76,12 @@ public class IceDrill extends IceAbility implements AddonAbility, ComboAbility {
 			return;
 		}
 
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.WaterCombo.IceDrill.Cooldown");
-		selectRange = Hyperion.getPlugin().getConfig().getInt("Abilities.Water.WaterCombo.IceDrill.SelectRange");
-		maxLength = Hyperion.getPlugin().getConfig().getInt("Abilities.Water.WaterCombo.IceDrill.MaxLength");
-		duration = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.WaterCombo.IceDrill.Duration");
-		regenDelay = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.WaterCombo.IceDrill.RegenDelay");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		cooldown = ScaleMethods.getLong("Abilities.Water.WaterCombo.IceDrill.Cooldown", currentLevel);
+		selectRange = ScaleMethods.getInt("Abilities.Water.WaterCombo.IceDrill.SelectRange", currentLevel);
+		maxLength = ScaleMethods.getInt("Abilities.Water.WaterCombo.IceDrill.MaxLength", currentLevel);
+		duration = ScaleMethods.getLong("Abilities.Water.WaterCombo.IceDrill.Duration", currentLevel);
+		regenDelay = ScaleMethods.getLong("Abilities.Water.WaterCombo.IceDrill.RegenDelay", currentLevel);
 
 		selectRange = (int) getNightFactor(selectRange, player.getWorld());
 

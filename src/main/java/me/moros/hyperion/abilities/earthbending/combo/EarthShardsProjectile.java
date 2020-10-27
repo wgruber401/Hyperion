@@ -26,8 +26,10 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -52,9 +54,11 @@ public class EarthShardsProjectile extends EarthAbility implements AddonAbility 
 	public EarthShardsProjectile(Player player, Location spawnLocation) {
 		super(player);
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthCombo.EarthShards.Damage");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthCombo.EarthShards.Range");
-		double accuracyDrop = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthCombo.EarthShards.AccuracyDrop");
+
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_EarthShards"));
+		damage = ScaleMethods.getDouble("Abilities.Earth.EarthCombo.EarthShards.Damage", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Earth.EarthCombo.EarthShards.Range", currentLevel);
+		double accuracyDrop = ScaleMethods.getDouble("Abilities.Earth.EarthCombo.EarthShards.AccuracyDrop", currentLevel);
 
 		distanceTravelled = 0;
 

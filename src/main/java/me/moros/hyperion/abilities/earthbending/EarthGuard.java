@@ -24,9 +24,11 @@ import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import com.projectkorra.projectkorra.util.TempPotionEffect;
 import me.moros.hyperion.Hyperion;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.BendingFallingBlock;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -77,9 +79,10 @@ public class EarthGuard extends EarthAbility implements AddonAbility {
 			return;
 		}
 
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthGuard.Cooldown");
-		duration = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthGuard.Duration");
-		selectRange = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthGuard.SelectRange");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		cooldown = ScaleMethods.getLong("Abilities.Earth.EarthGuard.Cooldown", currentLevel);
+		duration = ScaleMethods.getLong("Abilities.Earth.EarthGuard.Duration", currentLevel);
+		selectRange = ScaleMethods.getInt("Abilities.Earth.EarthGuard.SelectRange", currentLevel);
 
 		formed = false;
 		metal = false;

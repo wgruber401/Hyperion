@@ -31,11 +31,13 @@ import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.MovementHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import com.projectkorra.projectkorra.util.TempPotionEffect;
 import com.projectkorra.projectkorra.waterbending.ice.PhaseChange;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.BendingFallingBlock;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Color;
@@ -85,11 +87,12 @@ public class IceBreath extends IceAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Water.IceBreath.Damage");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Water.IceBreath.Range");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.IceBreath.Cooldown");
-		chargeTime = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.IceBreath.ChargeTime");
-		frostDuration = Hyperion.getPlugin().getConfig().getLong("Abilities.Water.IceBreath.FrostDuration");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Water.IceBreath.Damage", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Water.IceBreath.Range", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Water.IceBreath.Cooldown", currentLevel);
+		chargeTime = ScaleMethods.getLong("Abilities.Water.IceBreath.ChargeTime", currentLevel);
+		frostDuration = ScaleMethods.getLong("Abilities.Water.IceBreath.FrostDuration", currentLevel);
 
 		charged = chargeTime <= 0;
 		released = false;

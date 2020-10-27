@@ -26,8 +26,10 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.earthbending.Collapse;
 import com.projectkorra.projectkorra.earthbending.RaiseEarth;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -53,8 +55,9 @@ public class EarthGuardWall extends EarthAbility implements AddonAbility {
 			return;
 		}
 
-		wallDuration = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthGuard.WallDuration");
-		wallCooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthGuard.WallCooldown");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_EarthGuard"));
+		wallDuration = ScaleMethods.getLong("Abilities.Earth.EarthGuard.WallDuration", currentLevel);
+		wallCooldown = ScaleMethods.getLong("Abilities.Earth.EarthGuard.WallCooldown", currentLevel);
 
 		if (raiseSmallWall()) {
 			start();

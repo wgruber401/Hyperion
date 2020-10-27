@@ -30,9 +30,11 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.FastMath;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Location;
@@ -87,11 +89,12 @@ public class LavaDisk extends LavaAbility implements AddonAbility, MultiAbility 
 			return;
 		}
 
-		maxDamage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.LavaDisk.MaxDamage");
-		minDamage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.LavaDisk.MinDamage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.LavaDisk.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.LavaDisk.Range");
-		regenDelay = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.LavaDisk.RegenDelay");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		maxDamage = ScaleMethods.getDouble("Abilities.Earth.LavaDisk.MaxDamage", currentLevel);
+		minDamage = ScaleMethods.getDouble("Abilities.Earth.LavaDisk.MinDamage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Earth.LavaDisk.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Earth.LavaDisk.Range", currentLevel);
+		regenDelay = ScaleMethods.getLong("Abilities.Earth.LavaDisk.RegenDelay", currentLevel);
 		passHit = Hyperion.getPlugin().getConfig().getBoolean("Abilities.Earth.LavaDisk.PassThroughEntities");
 		materials = new HashSet<>(Hyperion.getPlugin().getConfig().getStringList("Abilities.Earth.LavaDisk.AdditionalMeltableBlocks"));
 

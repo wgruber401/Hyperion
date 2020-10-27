@@ -19,11 +19,9 @@
 
 package me.moros.hyperion.abilities.firebending.combo;
 
-import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.AirAbility;
-import com.projectkorra.projectkorra.ability.BlueFireAbility;
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.ability.util.Collision;
@@ -35,10 +33,13 @@ import com.projectkorra.projectkorra.firebending.util.FireDamageTimer;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.waterbending.SurgeWall;
 import com.projectkorra.projectkorra.waterbending.SurgeWave;
 import me.moros.hyperion.Hyperion;
+import me.moros.hyperion.methods.ScaleMethods;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -79,6 +80,8 @@ public class FireWave extends FireAbility implements AddonAbility, ComboAbility 
 
 	private int ticks = 0;
 
+	private boolean blueFire = false;
+
 	public FireWave(Player player) {
 		super(player);
 
@@ -86,21 +89,16 @@ public class FireWave extends FireAbility implements AddonAbility, ComboAbility 
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Fire.FireCombo.FireWave.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.FireCombo.FireWave.Cooldown");
-		int range = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.FireCombo.FireWave.Range");
-		duration = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.FireCombo.FireWave.Duration");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Fire.FireCombo.FireWave.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Fire.FireCombo.FireWave.Cooldown", currentLevel);
+		int range = ScaleMethods.getInt("Abilities.Fire.FireCombo.FireWave.Range", currentLevel);
+		duration = ScaleMethods.getLong("Abilities.Fire.FireCombo.FireWave.Duration", currentLevel);
 		moveRate = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.FireCombo.FireWave.MoveRate");
-		maxHeight = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.FireCombo.FireWave.MaxHeight");
-		width = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.FireCombo.FireWave.Width");
+		maxHeight = ScaleMethods.getInt("Abilities.Fire.FireCombo.FireWave.MaxHeight", currentLevel);
+		width = ScaleMethods.getInt("Abilities.Fire.FireCombo.FireWave.Width", currentLevel);
 
-		if (bPlayer.canUseSubElement(SubElement.BLUE_FIRE)) {
-			damage *= BlueFireAbility.getDamageFactor();
-			height *= BlueFireAbility.getRangeFactor();
-			maxHeight *= BlueFireAbility.getRangeFactor();
-			width *= BlueFireAbility.getRangeFactor();
-			cooldown *= BlueFireAbility.getCooldownFactor();
-		}
+		blueFire = getFireType() == Material.SOUL_FIRE;
 
 		damage = getDayFactor(damage, player.getWorld());
 		height = (int) getDayFactor(2, player.getWorld());
@@ -294,7 +292,7 @@ public class FireWave extends FireAbility implements AddonAbility, ComboAbility 
 	@Override
 	public void handleCollision(Collision collision) {
 		if (collision.getAbilitySecond() instanceof SurgeWave || collision.getAbilitySecond() instanceof SurgeWall) {
-			if (!bPlayer.canUseSubElement(SubElement.BLUE_FIRE)) collision.setRemovingFirst(true);
+			if (!blueFire) collision.setRemovingFirst(true);
 			if (collision.getAbilitySecond() instanceof SurgeWall && ((SurgeWall) collision.getAbilitySecond()).isFrozen()) {
 				collision.setRemovingSecond(false);
 			}

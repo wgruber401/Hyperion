@@ -42,6 +42,7 @@ public class HyperionCommand extends PKCommand {
 			if (args.get(0).equals("reload") && hasPermission(sender, "reload")) {
 				Hyperion.getPlugin().reloadConfig();
 				ConfigManager.modifiersConfig.reloadConfig();
+				ConfigManager.scalingConfig.reloadConfig();
 				sender.sendMessage(ChatColor.GREEN + "Hyperion config has been reloaded.");
 			}
 		}

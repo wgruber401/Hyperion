@@ -14,14 +14,14 @@ configure<JavaPluginConvention> {
 repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://jitpack.io")
     maven("https://repo.codemc.org/repository/maven-public")
+    flatDir { dirs("libs") }
 }
 
 dependencies {
     implementation("org.bstats", "bstats-bukkit-lite", "1.7")
     compileOnly("org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT")
-    compileOnly("com.github.ProjectKorra:ProjectKorra:v1.9.0")
+    compileOnly("com.projectkorra", "ProjectKorra", "1.9.0")
 }
 
 tasks {

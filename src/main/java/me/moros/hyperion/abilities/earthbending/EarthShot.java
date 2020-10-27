@@ -26,9 +26,11 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.BendingFallingBlock;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Location;
@@ -79,13 +81,14 @@ public class EarthShot extends EarthAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthShot.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthShot.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthShot.Range");
-		selectRange = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthShot.SelectRange");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Earth.EarthShot.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Earth.EarthShot.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Earth.EarthShot.Range", currentLevel);
+		selectRange = ScaleMethods.getInt("Abilities.Earth.EarthShot.SelectRange", currentLevel);
 		magmaShot = Hyperion.getPlugin().getConfig().getBoolean("Abilities.Earth.EarthShot.MagmaShot.AllowConvert");
 		magmaModifier = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthShot.MagmaShot.DamageModifier");
-		chargeTime = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthShot.MagmaShot.ChargeTime");
+		chargeTime = ScaleMethods.getLong("Abilities.Earth.EarthShot.MagmaShot.ChargeTime", currentLevel);
 
 		ready = false;
 		launched = false;

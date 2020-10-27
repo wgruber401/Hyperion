@@ -33,9 +33,11 @@ import com.projectkorra.projectkorra.util.ActionBar;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.MovementHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.BendingFallingBlock;
 import me.moros.hyperion.util.TempArmorStand;
 import org.bukkit.Location;
@@ -79,10 +81,6 @@ public class EarthLine extends EarthAbility implements AddonAbility {
 	private long prisonCooldown;
 	@Attribute("Prison" + Attribute.DURATION)
 	private long prisonDuration;
-	@Attribute(Attribute.RADIUS)
-	private double prisonRadius;
-	@Attribute("PrisonPoints")
-	private int prisonPoints;
 
 	@Attribute("MagmaModifier")
 	private double magmaModifier;
@@ -114,17 +112,16 @@ public class EarthLine extends EarthAbility implements AddonAbility {
 		targetLocked = false;
 		collapsing = false;
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthLine.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthLine.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthLine.Range");
-		selectRange = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthLine.SelectRange");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Earth.EarthLine.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Earth.EarthLine.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Earth.EarthLine.Range", currentLevel);
+		selectRange = ScaleMethods.getInt("Abilities.Earth.EarthLine.SelectRange", currentLevel);
 		allowUnderWater = Hyperion.getPlugin().getConfig().getBoolean("Abilities.Earth.EarthLine.AllowUnderWater");
 		magmaModifier = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthLine.Magma.DamageModifier");
-		regen = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthLine.Magma.Regen");
-		prisonCooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthLine.PrisonCooldown");
-		prisonDuration = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.EarthLine.PrisonDuration");
-		prisonRadius = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.EarthLine.PrisonRadius");
-		prisonPoints = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.EarthLine.PrisonPoints");
+		regen = ScaleMethods.getLong("Abilities.Earth.EarthLine.Magma.Regen", currentLevel);
+		prisonCooldown = ScaleMethods.getLong("Abilities.Earth.EarthLine.PrisonCooldown", currentLevel);
+		prisonDuration = ScaleMethods.getLong("Abilities.Earth.EarthLine.PrisonDuration", currentLevel);
 
 		if (prepare()) {
 			start();
@@ -234,7 +231,7 @@ public class EarthLine extends EarthAbility implements AddonAbility {
 				return;
 			}
 			bPlayer.addCooldown("EarthPrison", prisonCooldown);
-			for (Location loc : CoreMethods.getCirclePoints(location.clone().add(0, -1.05, 0), prisonPoints, prisonRadius)) {
+			for (Location loc : CoreMethods.getCirclePoints(location.clone().add(0, -1.05, 0), 8, 0.8)) {
 				new TempArmorStand(this, loc, material, prisonDuration, true);
 				new TempArmorStand(this, loc.add(0, -0.6, 0), material, prisonDuration, true);
 			}

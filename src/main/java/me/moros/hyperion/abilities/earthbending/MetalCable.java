@@ -25,10 +25,12 @@ import com.projectkorra.projectkorra.ability.MetalAbility;
 import com.projectkorra.projectkorra.ability.util.Collision;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.abilities.earthbending.util.Projectile;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.BendingFallingBlock;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Location;
@@ -86,11 +88,12 @@ public class MetalCable extends MetalAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.MetalCable.Damage");
-		blockSpeed = Hyperion.getPlugin().getConfig().getDouble("Abilities.Earth.MetalCable.BlockSpeed");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Earth.MetalCable.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.MetalCable.Range");
-		regenDelay = Hyperion.getPlugin().getConfig().getInt("Abilities.Earth.MetalCable.RegenDelay");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Earth.MetalCable.Damage", currentLevel);
+		blockSpeed = ScaleMethods.getDouble("Abilities.Earth.MetalCable.BlockSpeed", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Earth.MetalCable.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Earth.MetalCable.Range", currentLevel);
+		regenDelay = ScaleMethods.getInt("Abilities.Earth.MetalCable.RegenDelay", currentLevel);
 
 		hasHit = false;
 

@@ -25,12 +25,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
 
-	public static Config modifiersConfig;
+	public static Config modifiersConfig, scalingConfig;
 
 	public ConfigManager() {
 		setupMainConfig();
 		modifiersConfig = new Config("modifiers.yml");
+		scalingConfig = new Config("scaling.yml");
 		setupModifiersConfig();
+		new ScalingConfigManager().setupScalingConfig(scalingConfig);
 	}
 
 	public void setupModifiersConfig() {
@@ -82,8 +84,6 @@ public class ConfigManager {
 		config.addDefault("Abilities.Earth.EarthLine.Magma.RegenDelay", 20000);
 		config.addDefault("Abilities.Earth.EarthLine.PrisonCooldown", 15000);
 		config.addDefault("Abilities.Earth.EarthLine.PrisonDuration", 3000);
-		config.addDefault("Abilities.Earth.EarthLine.PrisonRadius", 0.8);
-		config.addDefault("Abilities.Earth.EarthLine.PrisonPoints", 8);
 
 		config.addDefault("Abilities.Earth.EarthShot.Enabled", true);
 		config.addDefault("Abilities.Earth.EarthShot.Description", "EarthShot is an offensive earth projectile move. Tap sneak while looking at a nearby earthbendable block and it will ascend to your eye height. Left click to launch your projectile. Once thrown, you can hold sneak to control its movement. If you are a Lavabender you can hold sneak while looking at your raised source to turn it into a more powerful MagmaShot!");

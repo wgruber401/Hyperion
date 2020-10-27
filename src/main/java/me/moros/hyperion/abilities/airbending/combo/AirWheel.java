@@ -29,14 +29,17 @@ import com.projectkorra.projectkorra.airbending.AirScooter;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.FastMath;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import sun.tools.jstat.Scale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +67,11 @@ public class AirWheel extends AirAbility implements AddonAbility, ComboAbility {
 		}
 
 		scooterSpeed = getAbility(player, AirScooter.class).getSpeed();
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Air.AirCombo.AirWheel.Damage");
-		knockback = Hyperion.getPlugin().getConfig().getDouble("Abilities.Air.AirCombo.AirWheel.Knockback");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Air.AirCombo.AirWheel.Cooldown");
+
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Air.AirCombo.AirWheel.Damage", currentLevel);
+		knockback = ScaleMethods.getDouble("Abilities.Air.AirCombo.AirWheel.Knockback", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Air.AirCombo.AirWheel.Cooldown", currentLevel);
 		affectCooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Air.AirCombo.AirWheel.AffectCooldown");
 
 		start();

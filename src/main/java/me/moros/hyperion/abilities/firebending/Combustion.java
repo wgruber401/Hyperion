@@ -29,9 +29,11 @@ import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.firebending.util.FireDamageTimer;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.StatisticsMethods;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.moros.hyperion.Hyperion;
 import me.moros.hyperion.methods.CoreMethods;
+import me.moros.hyperion.methods.ScaleMethods;
 import me.moros.hyperion.util.FastMath;
 import me.moros.hyperion.util.MaterialCheck;
 import org.bukkit.Location;
@@ -82,13 +84,14 @@ public class Combustion extends CombustionAbility implements AddonAbility {
 			return;
 		}
 
-		damage = Hyperion.getPlugin().getConfig().getDouble("Abilities.Fire.Combustion.Damage");
-		cooldown = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.Combustion.Cooldown");
-		range = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.Combustion.Range");
-		chargeTime = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.Combustion.ChargeTime");
-		power = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.Combustion.Power");
-		misfireModifier = Hyperion.getPlugin().getConfig().getInt("Abilities.Fire.Combustion.MisfireModifier");
-		regenDelay = Hyperion.getPlugin().getConfig().getLong("Abilities.Fire.Combustion.RegenDelay");
+		long currentLevel = GeneralMethods.limitLevels(player, StatisticsMethods.getId("AbilityLevel_" + getName()));
+		damage = ScaleMethods.getDouble("Abilities.Fire.Combustion.Damage", currentLevel);
+		cooldown = ScaleMethods.getLong("Abilities.Fire.Combustion.Cooldown", currentLevel);
+		range = ScaleMethods.getInt("Abilities.Fire.Combustion.Range", currentLevel);
+		chargeTime = ScaleMethods.getLong("Abilities.Fire.Combustion.ChargeTime", currentLevel);
+		power = ScaleMethods.getInt("Abilities.Fire.Combustion.Power", currentLevel);
+		misfireModifier = ScaleMethods.getInt("Abilities.Fire.Combustion.MisfireModifier", currentLevel);
+		regenDelay = ScaleMethods.getLong("Abilities.Fire.Combustion.RegenDelay", currentLevel);
 
 		charged = chargeTime <= 0;
 		launched = false;

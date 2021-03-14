@@ -193,7 +193,7 @@ public class Combustion extends CombustionAbility implements AddonAbility {
 		if (hasExploded) return;
 		hasExploded = true;
 		ParticleEffect.FLAME.display(center, 20, 1, 1, 1, 0.5f, 20);
-		ParticleEffect.SMOKE_LARGE.display(center, 20, 1, 1, 1, 0.5f);
+		ParticleEffect.FLAME.display(center, 20, 1, 1, 1, 0.5f);
 		ParticleEffect.FIREWORKS_SPARK.display(center, 20, 1, 1, 1, 0.5f);
 		ParticleEffect.SMOKE_LARGE.display(center, 20, 1, 1, 1, 0.5f);
 		ParticleEffect.EXPLOSION_HUGE.display(center, 5, 1, 1, 1, 0.5f);
